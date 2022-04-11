@@ -14,5 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+        $this->call(AdminAddSeeder::class);
+        $this->call(OpenWeatherServiceAddSeeder::class);
+        $this->call(CitiesAddSeeder::class);
     }
 }

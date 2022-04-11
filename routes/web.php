@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/dd', function () {
+
+    $data = (new \App\Clients\OpenWeather\Services\OpenWeatherService())->currentWeather(24.47, 54.37);
+    dd(json_decode($data,true));
+
 });
 
 Auth::routes();
