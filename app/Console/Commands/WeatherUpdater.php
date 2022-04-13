@@ -69,11 +69,12 @@ class WeatherUpdater extends Command
     {
         $record = WeatherRequest::create([
             'city_id' => $id,
-            'weather_condition' => $data['weather'][0]['main'],
+            'weather_condition_id' => $data['weather'][0]['id'],
+            'weather_condition_desc' => $data['weather'][0]['description'],
             'temperature' => $data['main']['temp'],
             'feels_like' => $data['main']['feels_like'],
             'humidity' => $data['main']['humidity'],
-            'wind_speed' => $data['wind']['speed'],
+            'wind_speed' => $data['wind']['speed'] * 3.6,
             'pressure' => $data['main']['pressure'],
             'visibility' => $data['visibility'],
             'sunrise' => $data['sys']['sunrise'],

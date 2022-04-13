@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminAddSeeder::class);
         $this->call(OpenWeatherServiceAddSeeder::class);
         $this->call(CitiesAddSeeder::class);
+        $this->call(WeatherConditionsListSeeder::class);
     }
 }

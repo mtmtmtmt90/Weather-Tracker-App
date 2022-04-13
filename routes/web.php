@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Common\OpenWeatherController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +17,33 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/dd', function () {
 
-    $data = (new \App\Clients\OpenWeather\Services\OpenWeatherService())->currentWeather(24.47, 54.37);
-    dd(json_decode($data,true));
+    $data = (new OpenWeatherController())->getWeatherHistory();
+    dd($data);
 
 });
+Route::get('/', [OpenWeatherController::class, 'index']);
+Route::get('/current', [OpenWeatherController::class, 'currentWeather']);
+Route::post('/getHistory', [OpenWeatherController::class, 'getWeatherHistory']);
 
-Auth::routes();
+Auth::routes([
+    'reset' => false,
+    'confirm' => false,
+    'verify' => false,
+    'register' => false,
+]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'auth'], function(){
+    Route::prefix('/dashboard')->group(function () {
+        Route::get('/', [OpenWeatherController::class, 'main']);
+        Route::prefix('/city/{id}')->group(function () {
+            Route::get('/', [OpenWeatherController::class, 'countryData']);
+            Route::prefix('/date/{date}')->group(function () {
+                Route::get('/', [OpenWeatherController::class, 'dateData']);
+            });
+        });
+        Route::prefix('/record')->group(function () {
+            Route::get('/edit/{id}', [OpenWeatherController::class, 'recordEdit']);
+            Route::post('/save/{id}', [OpenWeatherController::class, 'recordSave']);
+        });
+    });
+});

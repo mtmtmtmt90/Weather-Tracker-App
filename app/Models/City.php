@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model
 {
@@ -17,4 +18,9 @@ class City extends Model
     ];
 
     use HasFactory;
+
+    public function weather() : HasMany
+    {
+        return $this->hasMany(WeatherRequest::class, 'city_id', 'id');
+    }
 }
